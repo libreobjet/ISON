@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>ISON : International Standard Object Number</title>
+		<script src="js/sha1.js"></script>
+		<script src="js/qrcode.js"></script>
+		<script>
+			var generateISON = function() {
+				var name = document.getElementById('name').value;
+				var date = document.getElementById('date').value;
+				var authors = document.getElementById('authors').value;
+				var license = document.getElementById('license').value;
+				var display = document.getElementById('ISON');
+				var data = name + "\t" + date + "\t" + authors + "\t" + license;
+				console.log(data);
+				var ISON = CryptoJS.SHA1(data);
+
+				display.innerHTML= ISON;
+			}
+			
+		</script>
+		<style type="text/css">
+		<!-- 
+			#container {
+				max-width: 560px;
+				margin: 0 auto;
+			}
+			#ISON {
+				padding: 1em 0 1em 0;
+				font-weight: bold;
+			}
+			#ISON::before {
+				content: "ISON: "
+			}
+			
+		-->
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<h1>ISON generator</h1>
+			<p><strong>ISON : International Standard Object Number</strong></p>
+			<div>
+				<form>
+					<label>Object name :</label>
+					<input type="text" name="Object name" id="name"/><br/>
+					<label>Release date :</label>
+					<input type="text" name="Release date" id="date"/> (ISO 8601: YYYY-MM-DD)<br/>
+					<label>Author(s) name(s) :</label>
+					<input type="text" name="Author name" id="authors"/> (comma seperated)<br/>
+					<label>License :</label>
+					<input type="text" name="License" id="license"/><br/>
+					<input type="button" name="Generate ISON" value="Generate ISON" onclick="generateISON()"/>
+					<div id="ISON"></div>
+				</form>
+			</div>
+			<hr>
+			<div>
+				<h3>Notes :</h3>
+				<p>
+					The idea is to find a way to mark any object with the minimum information that could return a description of the object, its author(s) and the license associated.
+					Since there might not be enough room for a lot of information (depending on the size and form of the object), the use of a serial number seemed the easiest choice.
+					As an examble, every book has an ISBN number which can help find more information about it from the online databases.
+					Same goes for electronic chips and components, their serial number is written on them which helps recover info about their use, constructor, etc.
+					The problem with ISBN is that it's a centralized system. The problem with chip numbering systems is that there is a different conention for each manufacturer.
+					By using SHA-1 algorithm and a minimum of required formatted information, we can have a decentralized system of generating unique identifyers for any object.
+				</p>
+				<h3>ISON specification 0.1 alpha:</h3>
+				<p>
+					4 required data fields:
+					<ol>
+						<li>Full name of the object</li>
+						<li>Release date (ISO 8601)</li>
+						<li>Full name(s) of the author(s) (In case of multiple authors, each name will be comma separated)</li>
+						<li>Full name of the license used</li>
+					</ol>
+					Each field is concatenated into one line, tab separated and in that specific order.<br>
+					The ISON is the SHA-1 of this resulting line.
+				</p>
+			</div>
+			<hr>
+			<p>A proposal by <a href="https://twitter.com/xuv">Julien Deswaef</a> from <a href="http://libreobjet.org">Libre Objet</a>.</p>
+		</div>
+	</body>
+</html>
